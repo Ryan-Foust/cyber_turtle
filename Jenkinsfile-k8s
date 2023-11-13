@@ -28,7 +28,7 @@ pipeline {
     stage("Checkout from SCM"){
        steps{
             dir('source') {
-                git branch: 'main', credentialsId: 'github', url: 'https://github.com/Ryan-Foust/cyber_turtle.git'
+                git branch: 'master', credentialsId: 'github', url: 'https://github.com/Ryan-Foust/cyber_turtle.git'
             }
        }
    }
