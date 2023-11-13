@@ -12,8 +12,5 @@ COPY ./src ./src
 # Install any needed packages specified in requirements.txt
 RUN pip install -r requirements.txt
 
-# Set environment variables
-ENV DISCORD_TOKEN your_bot_token_here
-
 # Run app.py when the container launches
 CMD ["python", "trial_3_chat_gpt.py"]
