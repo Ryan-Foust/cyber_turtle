@@ -16,4 +16,4 @@ async def daily_message(ctx):
     channel = bot.get_channel(0)
     await channel.send("@ everyone this is a test, plz ignore")
 
-bot.run("")
+bot.run("blank")
