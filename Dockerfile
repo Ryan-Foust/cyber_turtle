@@ -13,4 +13,4 @@ COPY ./src ./src
 RUN pip install -r requirements.txt
 
 # Run app.py when the container launches
-CMD ["python", "trial_3_chat_gpt.py"]
+CMD ["python", "src/trial_3_chat_gpt.py"]

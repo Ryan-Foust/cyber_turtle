@@ -31,12 +31,13 @@ def read_kubernetes_secret(secret_name, namespace=None):
 
 # part above is from chat gpt
 
-debug = True
-TOKEN = os.getenv("DISCORD_TOKEN")
-GUILD_ID = 0
-CHANNEL_ID = 0
+debug = os.getenv("debug")
+CHANNELS = os.getenv("channels-to-post")
+NAMESPACE = os.getenv("namespace")
+#TOKEN = os.getenv("DISCORD_TOKEN")
 
-if debug:
+
+if debug == "true":
     MESSAGE = "@everyone this is a test message"
 else:
     MESSAGE = "@everyone :sparkles:Good Morning, Hoodies:sparkles: Today is a new day with new opportunities. What opportunities do you have today?"
@@ -49,14 +50,18 @@ intents.presences = False
 bot = discord.Client(intents=intents)
 
 
+async def send_message(guild_id, channel_id):
+    guild = bot.get_guild(guild_id)
+    channel = guild.get_channel(channel_id)
+
+    await channel.send(MESSAGE)
+
 @bot.event
 async def on_ready():
     print(f"Logged in as {bot.user}")
 
     async def send_daily_message():
         await bot.wait_until_ready()
-        guild = bot.get_guild(GUILD_ID)
-        channel = guild.get_channel(CHANNEL_ID)
 
         while not bot.is_closed():
             now = datetime.datetime.now()
@@ -67,10 +72,14 @@ async def on_ready():
             target_hour, target_minute = target_time.hour, target_time.minute
 
             if (current_hour, current_minute) == (target_hour, target_minute):
-                await channel.send(MESSAGE)
 
-            await asyncio.sleep(60)  # Check every 60 seconds
+                for CHANNEL in CHANNELS:
+                    discord_ids = read_kubernetes_secret(CHANNEL, NAMESPACE)
+                    await send_message(discord_ids["guild_id"], discord_ids["channel_id"])
+
+        await asyncio.sleep(60)
+
 
     bot.loop.create_task(send_daily_message())
 
-bot.run(TOKEN)
+bot.run(read_kubernetes_secret("discord-secret-key", NAMESPACE)["auth-token"])
