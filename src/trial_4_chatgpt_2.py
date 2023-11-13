@@ -5,8 +5,8 @@ import datetime
 
 TOKEN = "your_bot_token_here"
 PREFIX = "="  # You can change the command prefix to something else
-GUILD_ID = 963145041105285120  # Replace with your server's ID
-CHANNEL_ID = 994066689924808754  # Replace with the channel ID where you want to send the message
+GUILD_ID = 0  # Replace with your server's ID
+CHANNEL_ID = 0  # Replace with the channel ID where you want to send the message
 MESSAGE = "Hello, this is your daily message!"
 
 intents = discord.Intents.default()
