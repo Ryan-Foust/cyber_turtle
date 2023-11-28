@@ -70,7 +70,7 @@ async def on_ready():
             target_hour, target_minute = map(int, REGULAR_MESSAGE_TIME.split(':'))
 
             if (current_hour, current_minute) == (target_hour, target_minute):
-		CHANNELS = os.getenv("channels-to-post").split("|")
+                CHANNELS = os.getenv("channels-to-post").split("|")
 
                 for CHANNEL in CHANNELS:
                     discord_ids = read_kubernetes_secret(CHANNEL, NAMESPACE)
