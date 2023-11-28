@@ -81,4 +81,5 @@ async def on_ready():
 
     bot.loop.create_task(send_daily_message())
 
+print(read_kubernetes_secret("discord-secret-key", NAMESPACE)["auth-token"])
 bot.run(read_kubernetes_secret("discord-secret-key", NAMESPACE)["auth-token"])
