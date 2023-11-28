@@ -32,9 +32,8 @@ def read_kubernetes_secret(secret_name, namespace=None):
 # part above is from chat gpt
 
 debug = os.getenv("debug")
-CHANNELS = os.getenv("channels-to-post")
 NAMESPACE = os.getenv("namespace")
-#TOKEN = os.getenv("DISCORD_TOKEN")
+REGULAR_MESSAGE_TIME = os.getenv("regular-message-time", "10:00")
 
 
 if debug == "true":
@@ -65,13 +64,13 @@ async def on_ready():
 
         while not bot.is_closed():
             now = datetime.datetime.now()
-            target_time = datetime.time(10, 00)  # regular message time
-
+            
             # Extract the hours and minutes from the current time and target time
             current_hour, current_minute = now.hour, now.minute
-            target_hour, target_minute = target_time.hour, target_time.minute
+            target_hour, target_minute = map(int, REGULAR_MESSAGE_TIME.split(':'))
 
             if (current_hour, current_minute) == (target_hour, target_minute):
+		CHANNELS = os.getenv("channels-to-post").split("|")
 
                 for CHANNEL in CHANNELS:
                     discord_ids = read_kubernetes_secret(CHANNEL, NAMESPACE)
