@@ -2,6 +2,7 @@
 import discord
 import asyncio
 import datetime
+import base64
 import os
 from kubernetes import client, config
 
@@ -20,7 +21,7 @@ def read_kubernetes_secret(secret_name, namespace=None):
     try:
         # Get the secret
         secret = v1.read_namespaced_secret(name=secret_name, namespace=namespace)
-        return secret.data
+        return base64.b64decode(secret.data).decode('utf-8')
     except client.rest.ApiException as e:
         if e.status == 404:
             print(f"Secret '{secret_name}' not found in namespace '{namespace}'.")
